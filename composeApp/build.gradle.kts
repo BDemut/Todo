@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.sqlDelight)
 }
 
 kotlin {
@@ -36,19 +37,26 @@ kotlin {
 
             implementation(libs.koin.android)
             implementation(libs.koin.androidx.compose)
+
+            implementation(libs.sqlDelight.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.ui)
+            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
 
             api(libs.koin.core)
             implementation(libs.koin.compose)
 
             implementation(libs.kotlinx.datetime)
+
+            implementation(libs.sqlDelight.coroutine)
+        }
+        nativeMain.dependencies {
+            implementation(libs.sqlDelight.native)
         }
     }
 }
@@ -88,5 +96,13 @@ android {
 }
 dependencies {
     implementation(libs.androidx.ui.text.google.fonts)
+}
+
+sqldelight {
+    databases {
+        create("TodoItemsDB") {
+            packageName.set("com.defconapplications.todo")
+        }
+    }
 }
 

@@ -1,6 +1,8 @@
 package com.defconapplications.todo.di
 
 import TodoRepository
+import com.defconapplications.todo.data.sqldelight.DatabaseDriverFactory
+import com.defconapplications.todo.data.sqldelight.TodoDao
 import com.defconapplications.todo.ui.home.HomeScreenViewModel
 import com.defconapplications.todo.ui.home.mappers.HomeTodoItemSectionMapper
 import com.defconapplications.todo.utils.ViewModel
@@ -10,7 +12,11 @@ import org.koin.dsl.module
 
 object AppKoinModuleFactory {
     fun create() = module {
-        single { TodoRepository() }
+        nativeDefinitions()
+
+        factory { TodoDao(databaseDriverFactory = get()) }
+
+        single { TodoRepository(dao = get()) }
 
         factory { HomeTodoItemSectionMapper() }
 
@@ -19,3 +25,5 @@ object AppKoinModuleFactory {
 }
 
 expect inline fun <reified T : ViewModel> Module.viewModel(crossinline def: Scope.() -> T)
+
+expect fun Module.nativeDefinitions()

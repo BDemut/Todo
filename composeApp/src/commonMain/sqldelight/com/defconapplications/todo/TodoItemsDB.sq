@@ -1,0 +1,19 @@
+import kotlinx.datetime.LocalDate;
+import kotlinx.datetime.LocalTime;
+
+CREATE TABLE Item (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    deadline_date INTEGER AS LocalDate NOT NULL,
+    deadline_time INTEGER AS LocalTime
+);
+
+insertItem:
+INSERT INTO Item
+VALUES (?, ?, ?, ?);
+
+removeItem:
+DELETE FROM Item WHERE id = ?;
+
+getItems:
+SELECT Item.* FROM Item ORDER BY deadline_date, deadline_time;

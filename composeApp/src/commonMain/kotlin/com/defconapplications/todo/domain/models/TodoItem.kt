@@ -4,6 +4,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 
 data class TodoItem(
+    val id: Long,
     val title: String,
     val deadline: Deadline
 )
