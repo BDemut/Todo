@@ -29,27 +29,34 @@ fun HomeScreen(
     viewModel: HomeScreenViewModel = koinViewModel()
 ) {
     TodoTheme {
-        Scaffold(
-            topBar = { TopBar() },
-            floatingActionButton = { AddItemButton() }
+        val state = viewModel.state.collectAsState().value
+        HomeScreenContent(state)
+    }
+}
+
+@Composable
+fun HomeScreenContent(
+    state: HomeState
+) {
+    Scaffold(
+        topBar = { TopBar() },
+        floatingActionButton = { AddItemButton() }
+    ) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(it),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val state = viewModel.state.collectAsState().value
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(it),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                state.sections.forEach { section ->
-                    item {
-                        Card(
-                            modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
-                        ) {
-                            Column {
-                                SectionHeader(section.title)
-                                for (item in section.items) {
-                                    TodoItem(item)
-                                }
+            state.sections.forEach { section ->
+                item {
+                    Card(
+                        modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
+                    ) {
+                        Column {
+                            SectionHeader(section.title)
+                            for (item in section.items) {
+                                TodoItem(item)
                             }
                         }
                     }
@@ -61,14 +68,14 @@ fun HomeScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar() {
+private fun TopBar() {
     TopAppBar(title = {
         Text("To do")
     })
 }
 
 @Composable
-fun AddItemButton() {
+private fun AddItemButton() {
     FloatingActionButton(
         onClick = {}
     ) {
@@ -80,7 +87,7 @@ fun AddItemButton() {
 }
 
 @Composable
-fun SectionHeader(text: String) {
+private fun SectionHeader(text: String) {
     Text(
         modifier = Modifier.fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 16.dp),
@@ -89,7 +96,7 @@ fun SectionHeader(text: String) {
 }
 
 @Composable
-fun TodoItem(item: ViewTodoItem) {
+private fun TodoItem(item: ViewTodoItem) {
     Row(
         modifier = Modifier.padding(8.dp),
         verticalAlignment = Alignment.CenterVertically

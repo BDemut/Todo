@@ -93,6 +93,12 @@ android {
     dependencies {
         debugImplementation(libs.compose.ui.tooling)
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.8"
+    }
 }
 dependencies {
     implementation(libs.androidx.ui.text.google.fonts)
